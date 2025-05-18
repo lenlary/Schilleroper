@@ -3,6 +3,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+
+//####
 function Home() {
   const [isEntering, setIsEntering] = useState(false);
   const navigate = useNavigate();
