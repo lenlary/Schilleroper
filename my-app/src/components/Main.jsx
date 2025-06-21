@@ -1,19 +1,26 @@
-import './styles.css'
-import React from 'react'
+import React, { useEffect, useRef, forwardRef } from "react";
+import AudioButton from "./Audiobutton";
 
-function Main() {
+const Main = forwardRef(({ onStartChapters }, ref) => {
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      audioRef.current?.play().catch(() => {});
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <>
-      <body>
-        <div className="Hero">
-          <h1></h1>
-          <div class="door-area" onclick="window.location.href='eingang.html'" title="Eintreten"></div>
-          <h2>VERGANGENHEIT IM RAMPENLICHT</h2>
-        </div>
-      </body>
-    </>
-  )
-}
+    <div className="cont Main" ref={ref}>
+      <h1>Hauptsaal der Schilleroper</h1>
+      <AudioButton ref={audioRef} src="/relaxing-145038.mp3" />
 
-export default Main
+      <button className="start-button" onClick={onStartChapters}>
+        Kapitel beginnen
+      </button>
+    </div>
+  );
+});
+
+export default Main;
