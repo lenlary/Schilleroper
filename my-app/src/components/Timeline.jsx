@@ -1,24 +1,16 @@
-function Timeline({ currentLabel, onNext, onPrev, isFirst, isLast }) {
+import { useNavigate } from "react-router-dom";
+
+function Timeline({ currentLabel, prevSlug, nextSlug }) {
+  const nav = useNavigate();
+
   return (
     <div className="timeline-arrow">
-      {!isFirst && (
-        <div
-          className="arrow-head left"
-          onClick={onPrev}
-          title="Vorheriges Kapitel"
-        />
+      {prevSlug && (
+        <div className="arrow-head left" onClick={() => nav(`/${prevSlug}`)} />
       )}
-
-      <div className="arrow-body">
-        <span className="chapter-label">{currentLabel}</span>
-      </div>
-
-      {!isLast && (
-        <div
-          className="arrow-head right"
-          onClick={onNext}
-          title="Nächstes Kapitel"
-        />
+      <div className="arrow-body">{currentLabel}</div>
+      {nextSlug && (
+        <div className="arrow-head right" onClick={() => nav(`/${nextSlug}`)} />
       )}
     </div>
   );

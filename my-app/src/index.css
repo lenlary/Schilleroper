@@ -163,46 +163,24 @@
   }
 
   .kapitel-3 {
-    background-image: url(/Chat_Hero1.png);
+    background-image: url(/schilleroper144.png);
+    background-size: inherit;
   }
-  .kapitel-wrapper {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .kapitel-wrapper.forward,
-  .kapitel-wrapper.backward {
-    animation-duration: 0.6s;
-    animation-fill-mode: both;
+  .audio-player {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
   }
 
-  .kapitel-wrapper.forward {
-    animation-name: slideInFromRight;
+  .controls button {
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
   }
 
-  .kapitel-wrapper.backward {
-    animation-name: slideInFromLeft;
-  }
-
-  @keyframes slideInFromRight {
-    0% {
-      opacity: 0;
-      transform: translateX(100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideInFromLeft {
-    0% {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  input[type="range"] {
+    width: 100%;
+    max-width: 300px;
   }
 }

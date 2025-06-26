@@ -1,55 +1,52 @@
-import React, { useState, useRef } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+
 import Home from "./components/Home";
 import Main from "./components/Main";
-import Kapitel1 from "./components/Kapitel1";
-import Kapitel2 from "./components/Kapitel2";
-import Kapitel3 from "./components/Kapitel3";
-
-const chapters = [Kapitel1, Kapitel2, Kapitel3];
+import KapitelRouter from "./components/KapitelRouter";
 
 function App() {
-  const mainRef = useRef(null);
-  const [phase, setPhase] = useState("home"); // 'home' → 'main' → 'kapitel'
-  const [currentChapter, setCurrentChapter] = useState(0);
-
-  const CurrentChapter = chapters[currentChapter];
-
-  const enterMain = () => setPhase("main");
-  const startKapitel = () => setPhase("kapitel");
-
-  const [animationDirection, setAnimationDirection] = useState("forward");
-
-  const nextChapter = () => {
-    setAnimationDirection("forward");
-    setCurrentChapter((prev) => Math.min(prev + 1, chapters.length - 1));
-  };
-
-  const prevChapter = () => {
-    setAnimationDirection("backward");
-    setCurrentChapter((prev) => Math.max(prev - 1, 0));
-  };
-
   return (
-    <>
-      {phase === "home" && <Home onEnter={enterMain} scrollTarget={mainRef} />}
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/main" element={<Main />} />
+        <Route
+          path="/zirkusgebaeude"
+          element={<KapitelRouter slug="zirkusgebaeude" />}
+        />
+        <Route
+          path="/schiller-theater"
+          element={<KapitelRouter slug="schiller-theater" />}
+        />
+        <Route
+          path="/schiller-oper"
+          element={<KapitelRouter slug="schiller-oper" />}
+        />
+        <Route
+          path="/kriegsgefangenenlager"
+          element={<KapitelRouter slug="kriegsgefangenenlager" />}
+        />
+        <Route
+          path="/gefluechtetenheim"
+          element={<KapitelRouter slug="gefluechtetenheim" />}
+        />
+        <Route
+          path="/leerstand-und-denkmalschutz"
+          element={<KapitelRouter slug="leerstand-und-denkmalschutz" />}
+        />
+        <Route
+          path="/zukunftsvisionen"
+          element={<KapitelRouter slug="zukunftsvisionen" />}
+        />
 
-      {phase === "main" && (
-        <Main onStartChapters={startKapitel} ref={mainRef} />
-      )}
-
-      {phase === "kapitel" && (
-        <div className={`kapitel-wrapper ${animationDirection}`}>
-          <CurrentChapter
-            onNext={nextChapter}
-            onPrev={prevChapter}
-            isFirst={currentChapter === 0}
-            isLast={currentChapter === chapters.length - 1}
-            label={`Kapitel ${currentChapter + 1}`}
-          />
-        </div>
-      )}
-    </>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
-
 export default App;

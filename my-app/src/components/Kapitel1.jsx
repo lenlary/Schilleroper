@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from "react";
-import AudioButton from "./Audiobutton";
+import { useRef, useEffect } from "react";
+import AudioPlayer from "./AudioPlayer";
 import Timeline from "./Timeline";
 
-function Kapitel1({ onNext, onPrev, label, isFirst, isLast }) {
+function Kapitel1({ label, prevSlug, nextSlug }) {
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -15,14 +15,8 @@ function Kapitel1({ onNext, onPrev, label, isFirst, isLast }) {
   return (
     <div className="cont kapitel-1">
       <h1>{label}</h1>
-      <AudioButton ref={audioRef} src="/relaxing-145038.mp3" />
-      <Timeline
-        currentLabel={label}
-        onNext={onNext}
-        onPrev={onPrev}
-        isFirst={isFirst}
-        isLast={isLast}
-      />
+      <AudioPlayer ref={audioRef} src="/der-zirkus.mp3" />
+      <Timeline currentLabel={label} prevSlug={prevSlug} nextSlug={nextSlug} />
     </div>
   );
 }

@@ -1,25 +1,21 @@
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-function Home({ onEnter, scrollTarget }) {
+function Home() {
+  const navigate = useNavigate();
   const [isEntering, setIsEntering] = useState(false);
 
   const handleEnter = () => {
     setIsEntering(true);
 
     setTimeout(() => {
-      onEnter();
-
-      setTimeout(() => {
-        scrollTarget.current?.scrollIntoView();
-      }, 50);
+      navigate("/main");
     }, 800);
   };
 
   return (
     <div className={`cont Hero ${isEntering ? "enter-sequence" : ""}`}>
-      <h1></h1>
-      <div className="door-area" onClick={handleEnter} title="Eintreten"></div>
-      <h2>VERGANGENHEIT IM RAMPENLICHT</h2>
+      <div className="door-area" onClick={handleEnter}></div>
     </div>
   );
 }
