@@ -1,5 +1,14 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  SlControlPlay,
+  SlControlPause,
+  SlControlForward,
+  SlControlRewind,
+  SlControlStart,
+  SlControlEnd,
+  SlVolume2,
+} from "react-icons/sl";
 import { slugsList } from "./slugsList";
 
 const formatTime = (seconds) => {
@@ -27,16 +36,19 @@ const AudioPlayer = ({ src }) => {
   const prevSlug = index > 0 ? slugs[index - 1] : null;
   const nextSlug = index < slugs.length - 1 ? slugs[index + 1] : null;
 
-  // Autoplay bei Kapitelwechsel
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    let timeoutId;
+
     const playAudio = () => {
-      audio
-        .play()
-        .then(() => setIsPlaying(true))
-        .catch(() => {});
+      timeoutId = setTimeout(() => {
+        audio
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch(() => {});
+      }, 800);
     };
 
     if (audio.readyState >= 1) {
@@ -44,9 +56,13 @@ const AudioPlayer = ({ src }) => {
     } else {
       audio.addEventListener("loadedmetadata", playAudio, { once: true });
     }
+
+    return () => {
+      clearTimeout(timeoutId);
+      audio.removeEventListener("loadedmetadata", playAudio);
+    };
   }, [src]);
 
-  // Zeit & Fortschritt setzen
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -109,11 +125,21 @@ const AudioPlayer = ({ src }) => {
     <div className="audio-player">
       <audio ref={audioRef} src={src} preload="auto" />
       <div className="controls">
-        <button onClick={() => goTo(prevSlug)}>⬅️</button>
-        <button onClick={() => skip(-10)}>⏪ 10s</button>
-        <button onClick={togglePlay}>{isPlaying ? "⏸" : "▶️"}</button>
-        <button onClick={() => skip(10)}>⏩ 10s</button>
-        <button onClick={() => goTo(nextSlug)}>➡️</button>
+        <button onClick={() => goTo(prevSlug)}>
+          <SlControlStart />
+        </button>
+        <button onClick={() => skip(-5)}>
+          <SlControlRewind />
+        </button>
+        <button onClick={togglePlay}>
+          {isPlaying ? <SlControlPause /> : <SlControlPlay />}
+        </button>
+        <button onClick={() => skip(5)}>
+          <SlControlForward />
+        </button>
+        <button onClick={() => goTo(nextSlug)}>
+          <SlControlEnd />
+        </button>
         <div className="time-display">
           {formatTime(progress)} / {formatTime(duration)}
         </div>
@@ -128,7 +154,7 @@ const AudioPlayer = ({ src }) => {
         onChange={handleSeek}
       />
       <div className="volume">
-        🔉
+        <SlVolume2 />
         <input
           type="range"
           min="0"

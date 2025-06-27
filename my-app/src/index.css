@@ -23,16 +23,17 @@
     overflow-x: hidden;
   }
 
-  h1 {
-    color: #ffd580;
-    font-size: x-large;
-    padding-top: 10%;
+  .cinzel {
+    font-family: "Cinzel", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
   }
 
-  h2 {
-    color: #ffd580;
-    font-size: larger;
-    padding-bottom: 10%;
+  h1 {
+    color: rgb(206, 202, 202);
+    font-size: x-large;
+    padding-top: 10%;
   }
 
   .cont {
@@ -46,9 +47,23 @@
     width: 100vw;
     overflow: hidden;
     position: relative;
+    touch-action: none;
+  }
+  .cont1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    touch-action: none;
   }
   .Hero {
-    background-image: url(/Chat_Hero1.png);
+    background-image: url(/home.png);
   }
 
   .enter-sequence {
@@ -82,7 +97,7 @@
       rgba(255, 255, 100, 0) 90%
     );
     border-radius: 10% / 5%;
-    animation: glow 3s ease-in-out infinite;
+    animation: glow 2.5s ease-in-out infinite;
     z-index: 10;
   }
 
@@ -92,7 +107,7 @@
       opacity: 0.3;
     }
     50% {
-      opacity: 0.9;
+      opacity: 0.99;
     }
   }
 
@@ -108,38 +123,41 @@
       box-shadow: 0 0 100px rgba(255, 255, 255, 0.9);
     }
   }
-  .Main {
-    background-image: url(/Chat_Hero.png);
-  }
 
   .kapitel-1 {
-    background-image: url(/Chat_Hero1.png);
+    background-image: url(/akt1.png);
   }
 
   .kapitel-2 {
-    background-image: url(/Chat_Hero.png);
+    background-image: url(/akt2.png);
   }
 
   .kapitel-3 {
-    background-image: url(/schilleroper144.png);
-    background-size: inherit;
+    background-image: url(/akt3.png);
   }
   .kapitel-4 {
-    background-image: url(/Chat_Hero1.png);
+    background-image: url(/akt4.png);
   }
 
   .kapitel-5 {
-    background-image: url(/Chat_Hero.png);
+    background-image: url(/akt5.png);
   }
 
   .kapitel-6 {
-    background-image: url(/schilleroper144.png);
+    background-image: url(/akt6.png);
     background-size: inherit;
+  }
+
+  .dank {
+    background: whitesmoke;
+  }
+  .impressum {
+    font-size: xx-small;
   }
   .audio-player {
     padding: 1rem;
-    background: #111;
-    color: white;
+    background: rgba(17, 17, 17, 0.1);
+    color: rgb(206, 202, 202);
     border-radius: 8px;
     max-width: 600px;
     margin: 1rem auto;
@@ -150,14 +168,13 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0 1.2rem;
   }
 
   .controls button {
     background: none;
     border: none;
-    color: white;
-    font-size: 1.2rem;
+    padding: 8px 12px;
     cursor: pointer;
   }
 
@@ -168,35 +185,38 @@
     text-align: center;
   }
 
-  .progress-bar {
-    width: 100%;
-    margin: 0.5rem 0;
+  .audio-player input[type="range"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 10px;
+    background: transparent;
+    border: 1px solid rgb(206, 202, 202);
+    border-radius: 5px;
+    cursor: pointer;
   }
 
-  .volume {
+  .audio-player .progress-bar {
+    width: 100%;
+  }
+
+  .audio-player .volume {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 0.5rem;
+    margin-top: 1rem;
   }
 
-  /* 📱 Mobile View */
-  @media (max-width: 768px) {
-    .audio-player {
-      padding: 0.75rem;
-      font-size: 0.9rem;
-    }
-
-    .controls button {
-      font-size: 1rem;
-    }
-
-    .volume input {
-      width: 80px;
-    }
-
-    .progress-bar {
-      height: 4px;
-    }
+  .audio-player input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    padding: 4px;
+    background: rgb(206, 202, 202);
+    border: 1px solid rgb(206, 202, 202);
+    border-radius: 50%;
+    cursor: pointer;
   }
 }

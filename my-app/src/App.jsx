@@ -7,6 +7,7 @@ import {
 
 import Home from "./components/Home";
 import KapitelRouter from "./components/KapitelRouter";
+import Impressum from "./components/Impressum";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:slug" element={<KapitelRouter />} />
+        <Route path="/impressum" element={<Impressum />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
