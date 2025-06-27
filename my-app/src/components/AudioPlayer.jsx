@@ -1,24 +1,69 @@
-import { useRef, useState, useEffect, forwardRef } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { slugsList } from "./slugsList";
 
-const AudioButton = forwardRef(({ src }, ref) => {
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, "0");
+  return `${mins}:${secs}`;
+};
+
+const AudioPlayer = ({ src }) => {
   const audioRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0); // in Sekunden
+  const navigate = useNavigate();
+  const { slug } = useParams();
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+
+  const slugs = useMemo(() => Object.keys(slugsList), []);
+  const index = slugs.indexOf(slug);
+  const prevSlug = index > 0 ? slugs[index - 1] : null;
+  const nextSlug = index < slugs.length - 1 ? slugs[index + 1] : null;
+
+  // Autoplay bei Kapitelwechsel
   useEffect(() => {
     const audio = audioRef.current;
+    if (!audio) return;
 
-    const updateProgress = () => {
-      setProgress(audio.currentTime);
+    const playAudio = () => {
+      audio
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
     };
 
+    if (audio.readyState >= 1) {
+      playAudio();
+    } else {
+      audio.addEventListener("loadedmetadata", playAudio, { once: true });
+    }
+  }, [src]);
+
+  // Zeit & Fortschritt setzen
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const setAudioDuration = () => setDuration(audio.duration || 0);
+    const updateProgress = () => setProgress(audio.currentTime);
+
+    audio.addEventListener("loadedmetadata", setAudioDuration);
     audio.addEventListener("timeupdate", updateProgress);
+
     return () => {
+      audio.removeEventListener("loadedmetadata", setAudioDuration);
       audio.removeEventListener("timeupdate", updateProgress);
     };
   }, []);
 
-  const togglePlay = () => {
+  const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
@@ -27,9 +72,19 @@ const AudioButton = forwardRef(({ src }, ref) => {
     } else {
       audio.play().catch(() => {});
     }
-
     setIsPlaying(!isPlaying);
-  };
+  }, [isPlaying]);
+
+  const skip = useCallback(
+    (sec) => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      const newTime = Math.min(Math.max(0, audio.currentTime + sec), duration);
+      audio.currentTime = newTime;
+      setProgress(newTime);
+    },
+    [duration]
+  );
 
   const handleSeek = (e) => {
     const time = parseFloat(e.target.value);
@@ -37,34 +92,54 @@ const AudioButton = forwardRef(({ src }, ref) => {
     setProgress(time);
   };
 
-  const skip = (sec) => {
-    const audio = audioRef.current;
-    audio.currentTime = Math.max(
-      0,
-      Math.min(audio.duration, audio.currentTime + sec)
-    );
+  const handleVolume = (e) => {
+    const newVol = parseFloat(e.target.value);
+    setVolume(newVol);
+    audioRef.current.volume = newVol;
   };
+
+  const goTo = useCallback(
+    (targetSlug) => {
+      if (targetSlug) navigate(`/${targetSlug}`);
+    },
+    [navigate]
+  );
 
   return (
     <div className="audio-player">
       <audio ref={audioRef} src={src} preload="auto" />
       <div className="controls">
+        <button onClick={() => goTo(prevSlug)}>⬅️</button>
         <button onClick={() => skip(-10)}>⏪ 10s</button>
-        <button onClick={togglePlay}>
-          {isPlaying ? "⏸ Pause" : "▶️ Play"}
-        </button>
+        <button onClick={togglePlay}>{isPlaying ? "⏸" : "▶️"}</button>
         <button onClick={() => skip(10)}>⏩ 10s</button>
+        <button onClick={() => goTo(nextSlug)}>➡️</button>
+        <div className="time-display">
+          {formatTime(progress)} / {formatTime(duration)}
+        </div>
       </div>
       <input
         type="range"
+        className="progress-bar"
         min="0"
-        max={audioRef.current?.duration || 0}
+        max={duration}
         step="0.1"
         value={progress}
         onChange={handleSeek}
       />
+      <div className="volume">
+        🔉
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value={volume}
+          onChange={handleVolume}
+        />
+      </div>
     </div>
   );
-});
+};
 
 export default AudioPlayer;

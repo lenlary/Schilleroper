@@ -112,48 +112,6 @@
     background-image: url(/Chat_Hero.png);
   }
 
-  .arrow-body {
-    background: grey;
-    color: white;
-    padding: 0;
-    font-weight: bold;
-    font-size: 0.5rem;
-    text-align: center;
-    min-width: 90vw;
-  }
-
-  .timeline-arrow {
-    position: relative;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .arrow-head {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    cursor: pointer;
-    z-index: 2;
-  }
-
-  .arrow-head.right {
-    right: 10px;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-left: 30px solid grey;
-  }
-
-  .arrow-head.left {
-    left: 10px;
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
-    border-right: 30px solid grey;
-  }
-
   .kapitel-1 {
     background-image: url(/Chat_Hero1.png);
   }
@@ -166,21 +124,79 @@
     background-image: url(/schilleroper144.png);
     background-size: inherit;
   }
+  .kapitel-4 {
+    background-image: url(/Chat_Hero1.png);
+  }
+
+  .kapitel-5 {
+    background-image: url(/Chat_Hero.png);
+  }
+
+  .kapitel-6 {
+    background-image: url(/schilleroper144.png);
+    background-size: inherit;
+  }
   .audio-player {
+    padding: 1rem;
+    background: #111;
+    color: white;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 1rem auto;
+  }
+
+  .controls {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
   }
 
   .controls button {
-    margin: 0 0.5rem;
-    font-size: 1rem;
-    padding: 0.4rem 0.8rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
   }
 
-  input[type="range"] {
+  .time-display {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
     width: 100%;
-    max-width: 300px;
+    text-align: center;
+  }
+
+  .progress-bar {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+
+  .volume {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* 📱 Mobile View */
+  @media (max-width: 768px) {
+    .audio-player {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .controls button {
+      font-size: 1rem;
+    }
+
+    .volume input {
+      width: 80px;
+    }
+
+    .progress-bar {
+      height: 4px;
+    }
   }
 }

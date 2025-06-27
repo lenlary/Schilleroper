@@ -1,22 +1,10 @@
-import { useRef, useEffect } from "react";
-import AudioButton from "./AudioPlayer";
-import Timeline from "./Timeline";
+import AudioPlayer from "./AudioPlayer";
 
-function Kapitel2({ label, prevSlug, nextSlug }) {
-  const audioRef = useRef(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      audioRef.current?.play().catch(() => {});
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
+function Kapitel2({ label, src }) {
   return (
     <div className="cont kapitel-2">
       <h1>{label}</h1>
-      <AudioButton ref={audioRef} src="/relaxing-145038.mp3" />
-      <Timeline currentLabel={label} prevSlug={prevSlug} nextSlug={nextSlug} />
+      <AudioPlayer src={src} />
     </div>
   );
 }

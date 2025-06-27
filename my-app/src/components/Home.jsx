@@ -9,8 +9,8 @@ function Home() {
     setIsEntering(true);
 
     setTimeout(() => {
-      navigate("/main");
-    }, 800);
+      navigate("/zirkus");
+    }, 1000);
   };
 
   return (
